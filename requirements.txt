@@ -2,3 +2,7 @@ openai
 python-telegram-bot==20.6
 feedparser
 apscheduler
+python-telegram-bot[job-queue]==20.7   # PTB с поддержкой JobQueue (включает APScheduler)
+openai>=1.0.0                          # новый клиент OpenAI
+feedparser>=6.0                        # парсинг RSS-лент
+python-dotenv>=1.0                     
