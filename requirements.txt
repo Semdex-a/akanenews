@@ -1,0 +1,4 @@
+openai
+python-telegram-bot==20.6
+feedparser
+apscheduler
