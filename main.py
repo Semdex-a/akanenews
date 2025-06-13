@@ -68,23 +68,17 @@ def generate_akane(news):
 async def send_pulse(app: Application):
     logging.info("⏰ Pulse start")
     text = generate_akane(fetch_news())
-    target = TELEGRAM_CHAT_ID or list(app.bot_data.get("_chats", set()))[0]
-    await app.bot.send_message(target, text, parse_mode="Markdown")
-    logging.info("✅ Pulse sent")
 
-    # 🔐 сохраняем историю
-    try:
-        # обрезаем до MAX_HISTORY самых новых
-        if len(SENT_LINKS) > MAX_HISTORY:
-            SENT_LINKS = set(list(SENT_LINKS)[-MAX_HISTORY:])
-        with open(LINKS_FILE, "w", encoding="utf-8") as f:
-            json.dump(list(SENT_LINKS), f, ensure_ascii=False, indent=2)
-    except Exception as err:
-        logging.warning("Не смогла записать sent_links.json: %s", err)
+    chats = app.bot_data.get("_chats", set())
+    for chat_id in chats:
+        await app.bot.send_message(chat_id, text, parse_mode="Markdown")
+
+    logging.info("✅ Pulse sent %d chats", len(chats))
 
 # ─── Команды ─────────────────────────────────────────────
 async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    ctx.application.bot_data.setdefault("_chats", set()).add(update.effective_chat.id)
+    chats = ctx.application.bot_data.setdefault("_chats", set())
+    chats.add(update.effective_chat.id)
     await update.message.reply_text("Аканэ здесь, глупый! ♥  Напиши /pulse, если скучал.")
 
 async def pulse_now(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
