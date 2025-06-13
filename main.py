@@ -94,7 +94,7 @@ if __name__ == "__main__":
     # ✅ используем встроенную очередь
     app.job_queue.run_repeating(
         lambda ctx: asyncio.create_task(send_pulse(app)),
-        interval=60*60,
+        interval=240*60,
         first=40          # первый пульс сразу
     )
 
