@@ -60,7 +60,7 @@ def generate_akane(news):
 • Вступление-эмоция\n• 3-4 главных пункта (коротко, с твоим комментом)\n• Общий вывод\nФормат — Markdown.
 """
     resp = client.chat.completions.create(
-        model="gpt-4o-mini", messages=[{"role":"user","content":prompt}], temperature=0.85
+        model="gpt-4.1-mini", messages=[{"role":"user","content":prompt}], temperature=0.85
     )
     return resp.choices[0].message.content.strip()
 
